@@ -3,6 +3,7 @@
 ### Q1 CIS Benchmark
 
 ```bash
+sudo -i
 vim /var/lib/kubelet/config.yaml
 anonymous: false
 webhook enabled: true
@@ -13,12 +14,30 @@ vim /etc/kubernetes/manifest/etcd.yaml
 
 systemctl deamon-reload
 systemcll restart kubelet
+---
+
+sudo -i
+vim /var/lib/kubelet/config.yaml
+anonymous
+    enabled: false
+webhook
+    enabled: true
+authorization
+    mode: Webhook
+
+vim /etc/kubernetes/manifests/etcd.yaml
+--client-cert-auth=true
+
+systemctl daemon-reload
+systemctl restart kubelet
+
 ```
 
 ### Q2 TLS Secret
 
 ```bash
 kubectl -n clever-cactus create secret tls clever-cactus --cert=/home/candidate/ca-cert/web.k8s.local.crt --key=/home/candidate/ca-cert/web.k8s.local.key
+
 ```
 
 ### Q3 Docker Security
@@ -34,6 +53,7 @@ securityContext:
   runAsUser: 65535
   readOnlyRootFilesystem: true
   allowPrevilegeEscalation: false
+
 ```
 
 ### Q4 Falco **********
@@ -98,6 +118,7 @@ spec:
 
 kubectl apply -f allow-from-prod.yaml
 kubectl get networkpolicy -n data
+
 ```
 
 ### Q8 Ingress TLS
@@ -152,6 +173,7 @@ volumeMounts:
       sources:
       - serviceAccountToken:
           path: token
+
 
 kubectl apply -f /home/candidate/stats-monitor/deployment.yaml
 kubectl get deployment -n monitoring
