@@ -43,13 +43,13 @@ securityContext:
 ### Q4: Falco /dev/mem Detection (10 min) ⭐ HARD
 ```bash
 ssh cks004004
-# Create rule: /etc/falco/falco_rules.local.yaml
+# Create rule: /etc/falco/falco_rules.local.yaml (Search "Concepts" > "Rules" > "Default and Local Rules" > https://falco.org/docs/concepts/rules/default-custom/)
 # Run: sudo falco -M 30 -r /etc/falco/falco_rules.local.yaml >> devmem.log
 # Find: cat devmem.log | grep container_id
 # Scale: kubectl scale deployment ollama --replicas=0
 kubectl get deployment
 vim /etc/falco/falco_rules.local.yaml
-#Search 'https://falco.org/docs/concepts/rules/basic-elements/&#39; copy and modify (shell_binaries)
+#Search 'https://falco.org/docs/concepts/rules/basic-elements/&#39; copy and modify (shell_binaries) From "Overriding Rules"
 - list: mem_file
   items:[/dev/mem]
 - rule: devmem
@@ -59,7 +59,7 @@ vim /etc/falco/falco_rules.local.yaml
   output: >
     Shell (command=%proc.cmdline file=%fd.name container_id=%container.id)
   priority: NOTICE
-  tag: [file]
+  tags: [file]
 
 sudo falco -M 30 -r /etc/falco/falco_rules.local.yaml >> devmem.log
 cat devmem.log

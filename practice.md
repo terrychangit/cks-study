@@ -182,7 +182,7 @@ kubectl get deployment -n monitoring
 ### Q10 SBOM Generation
 
 ```bash
-kubectl get ppod -n apline
+kubectl get pod -n apline
 cat /home/candidate/apline-deployment.yaml
 
 kubectl -n apline exec -it alpine-7685556c79-nmxjn -c apline-a -- apk list| grep libcrypto3
@@ -288,10 +288,12 @@ kubectl get node
 apt update
 apt-cache madison kubeadm
 
-apt-get install -y kubeadm='1.32.1-1'
+apt install kubeadm='1.32.1-1'
 
 systemctl daemon-reload
 systemctl restart kubelet
+
+
 ```
 
 ### Q16 API Server
